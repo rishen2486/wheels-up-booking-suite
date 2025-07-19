@@ -14,7 +14,164 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      bookings: {
+        Row: {
+          car_id: string | null
+          created_at: string | null
+          dropoff_location: string | null
+          end_date: string
+          id: string
+          payment_status: string | null
+          pickup_location: string
+          special_requests: string | null
+          start_date: string
+          status: string | null
+          stripe_payment_intent_id: string | null
+          total_amount: number
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          car_id?: string | null
+          created_at?: string | null
+          dropoff_location?: string | null
+          end_date: string
+          id?: string
+          payment_status?: string | null
+          pickup_location: string
+          special_requests?: string | null
+          start_date: string
+          status?: string | null
+          stripe_payment_intent_id?: string | null
+          total_amount: number
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          car_id?: string | null
+          created_at?: string | null
+          dropoff_location?: string | null
+          end_date?: string
+          id?: string
+          payment_status?: string | null
+          pickup_location?: string
+          special_requests?: string | null
+          start_date?: string
+          status?: string | null
+          stripe_payment_intent_id?: string | null
+          total_amount?: number
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookings_car_id_fkey"
+            columns: ["car_id"]
+            isOneToOne: false
+            referencedRelation: "cars"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cars: {
+        Row: {
+          available: boolean | null
+          brand: string
+          created_at: string | null
+          daily_rate: number
+          description: string | null
+          features: string[] | null
+          fuel_type: string | null
+          id: string
+          image_urls: string[] | null
+          location: string
+          model: string
+          name: string
+          seats: number | null
+          transmission: string | null
+          type: string
+          unavailable_dates: string[] | null
+          updated_at: string | null
+          year: number
+        }
+        Insert: {
+          available?: boolean | null
+          brand: string
+          created_at?: string | null
+          daily_rate: number
+          description?: string | null
+          features?: string[] | null
+          fuel_type?: string | null
+          id?: string
+          image_urls?: string[] | null
+          location: string
+          model: string
+          name: string
+          seats?: number | null
+          transmission?: string | null
+          type: string
+          unavailable_dates?: string[] | null
+          updated_at?: string | null
+          year: number
+        }
+        Update: {
+          available?: boolean | null
+          brand?: string
+          created_at?: string | null
+          daily_rate?: number
+          description?: string | null
+          features?: string[] | null
+          fuel_type?: string | null
+          id?: string
+          image_urls?: string[] | null
+          location?: string
+          model?: string
+          name?: string
+          seats?: number | null
+          transmission?: string | null
+          type?: string
+          unavailable_dates?: string[] | null
+          updated_at?: string | null
+          year?: number
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string | null
+          email: string
+          first_name: string | null
+          id: string
+          last_name: string | null
+          phone: string | null
+          role: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          phone?: string | null
+          role?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          phone?: string | null
+          role?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
