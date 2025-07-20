@@ -47,8 +47,8 @@ export function Navbar() {
             
             {user ? (
               <>
-                <Link to="/bookings">
-                  <Button variant="ghost">My Bookings</Button>
+                <Link to="/dashboard">
+                  <Button variant="ghost">Dashboard</Button>
                 </Link>
                 
                 {(isAdmin || isAgent) && (
@@ -88,9 +88,9 @@ export function Navbar() {
                       <User className="mr-2 h-4 w-4" />
                       Profile
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => navigate('/bookings')}>
+                    <DropdownMenuItem onClick={() => navigate('/dashboard')}>
                       <Calendar className="mr-2 h-4 w-4" />
-                      My Bookings
+                      Dashboard
                     </DropdownMenuItem>
                     {(isAdmin || isAgent) && (
                       <DropdownMenuItem onClick={() => navigate('/admin')}>
@@ -142,9 +142,9 @@ export function Navbar() {
               
               {user ? (
                 <>
-                  <Link to="/bookings" onClick={() => setIsOpen(false)}>
+                  <Link to="/dashboard" onClick={() => setIsOpen(false)}>
                     <Button variant="ghost" className="w-full justify-start">
-                      My Bookings
+                      Dashboard
                     </Button>
                   </Link>
                   <Link to="/profile" onClick={() => setIsOpen(false)}>

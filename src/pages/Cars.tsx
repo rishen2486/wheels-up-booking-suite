@@ -116,7 +116,7 @@ export default function Cars() {
       navigate('/auth');
       return;
     }
-    navigate(`/book/${carId}`);
+    navigate(`/booking/${carId}`);
   };
 
   const getUniqueLocations = () => {
