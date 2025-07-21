@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Car, Menu, X, User, Calendar, Settings, LogOut } from 'lucide-react';
+import { Car, Menu, X, User, Calendar, Settings, LogOut, Home, MapPin, Camera } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import {
   DropdownMenu,
@@ -10,6 +10,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from '@/components/ui/sheet';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 
@@ -26,24 +31,73 @@ export function Navbar() {
   const isAdmin = profile?.role === 'admin';
   const isAgent = profile?.role === 'agent';
 
+  const navigationItems = [
+    { name: 'Home', path: '/', icon: Home },
+    { name: 'Rent Car', path: '/cars', icon: Car },
+    { name: 'Tour', path: '/tour', icon: MapPin },
+    { name: 'Attractions', path: '/attractions', icon: Camera },
+  ];
+
   return (
     <nav className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
+            {/* Mobile menu */}
+            <Sheet open={isOpen} onOpenChange={setIsOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="sm" className="md:hidden mr-2">
+                  <Menu className="h-5 w-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-64">
+                <div className="flex flex-col space-y-4 mt-8">
+                  {navigationItems.map((item) => {
+                    const Icon = item.icon;
+                    return (
+                      <Link
+                        key={item.path}
+                        to={item.path}
+                        className="flex items-center space-x-3 text-muted-foreground hover:text-foreground transition-colors p-2 rounded-md hover:bg-muted"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        <Icon className="h-5 w-5" />
+                        <span>{item.name}</span>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </SheetContent>
+            </Sheet>
+
             <Link to="/" className="flex items-center space-x-2">
               <Car className="h-8 w-8 text-primary" />
               <span className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-                RentCars
+                CarsRus
               </span>
             </Link>
           </div>
 
+          {/* Logo in top right (hidden on mobile) */}
+          <div className="hidden md:flex items-center absolute right-4 top-1/2 transform -translate-y-1/2">
+            <img 
+              src="/lovable-uploads/821064f5-40b4-4cd9-9284-c72424f80df8.png" 
+              alt="CarsRus Logo" 
+              className="h-10 w-auto"
+            />
+          </div>
+
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link to="/cars">
-              <Button variant="ghost">Browse Cars</Button>
-            </Link>
+            {navigationItems.map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {item.name}
+              </Link>
+            ))}
             
             {user ? (
               <>
@@ -118,75 +172,37 @@ export function Navbar() {
             )}
           </div>
 
-          {/* Mobile menu button */}
+          {/* Mobile auth buttons */}
           <div className="md:hidden flex items-center">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsOpen(!isOpen)}
-            >
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </Button>
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" className="relative h-8 w-8 rounded-full">
+                    <Avatar className="h-8 w-8">
+                      <AvatarFallback>
+                        {profile?.first_name?.[0] || user.email?.[0]?.toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={() => navigate('/dashboard')}>
+                    <Calendar className="mr-2 h-4 w-4" />
+                    Dashboard
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleSignOut}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link to="/auth">
+                <Button variant="ghost" size="sm">Sign In</Button>
+              </Link>
+            )}
           </div>
         </div>
-
-        {/* Mobile Navigation */}
-        {isOpen && (
-          <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-              <Link to="/cars" onClick={() => setIsOpen(false)}>
-                <Button variant="ghost" className="w-full justify-start">
-                  Browse Cars
-                </Button>
-              </Link>
-              
-              {user ? (
-                <>
-                  <Link to="/dashboard" onClick={() => setIsOpen(false)}>
-                    <Button variant="ghost" className="w-full justify-start">
-                      Dashboard
-                    </Button>
-                  </Link>
-                  <Link to="/profile" onClick={() => setIsOpen(false)}>
-                    <Button variant="ghost" className="w-full justify-start">
-                      Profile
-                    </Button>
-                  </Link>
-                  {(isAdmin || isAgent) && (
-                    <Link to="/admin" onClick={() => setIsOpen(false)}>
-                      <Button variant="outline" className="w-full justify-start">
-                        Admin Panel
-                      </Button>
-                    </Link>
-                  )}
-                  <Button
-                    variant="ghost"
-                    className="w-full justify-start"
-                    onClick={() => {
-                      handleSignOut();
-                      setIsOpen(false);
-                    }}
-                  >
-                    Sign Out
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Link to="/auth" onClick={() => setIsOpen(false)}>
-                    <Button variant="ghost" className="w-full justify-start">
-                      Sign In
-                    </Button>
-                  </Link>
-                  <Link to="/auth?mode=signup" onClick={() => setIsOpen(false)}>
-                    <Button className="w-full justify-start">
-                      Sign Up
-                    </Button>
-                  </Link>
-                </>
-              )}
-            </div>
-          </div>
-        )}
       </div>
     </nav>
   );

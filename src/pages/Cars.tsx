@@ -11,6 +11,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { DatePickerWithRange } from '@/components/ui/date-range-picker';
 import { DateRange } from 'react-day-picker';
+import SearchCard from '@/components/SearchCard';
 
 interface CarType {
   id: string;
@@ -143,9 +144,14 @@ export default function Cars() {
       {/* Header */}
       <div className="bg-gradient-hero py-12">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold text-white mb-4">Find Your Perfect Car</h1>
-          <p className="text-xl text-white/90">Choose from our wide selection of vehicles</p>
+          <h1 className="text-4xl font-bold text-white mb-4">Find Your Perfect Car Online</h1>
+          <p className="text-xl text-white/90">Choose from our wide selection of vehicles - book online instantly</p>
         </div>
+      </div>
+
+      {/* Search Card */}
+      <div className="max-w-7xl mx-auto px-4 -mt-6 relative z-10 mb-8">
+        <SearchCard />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-8">
@@ -202,12 +208,20 @@ export default function Cars() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredCars.map((car) => (
             <Card key={car.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-              <CardHeader className="p-0">
-                <div className="h-48 bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
-                  <Car className="h-16 w-16 text-primary" />
-                  <div className="absolute top-4 right-4">
-                    <Badge variant="secondary">{car.type}</Badge>
-                  </div>
+              <CardHeader className="p-0 relative">
+                <div className="h-48 bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center overflow-hidden">
+                  {car.image_urls && car.image_urls.length > 0 ? (
+                    <img 
+                      src={car.image_urls[0]} 
+                      alt={car.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <Car className="h-16 w-16 text-primary" />
+                  )}
+                </div>
+                <div className="absolute top-4 right-4">
+                  <Badge variant="secondary">{car.type}</Badge>
                 </div>
               </CardHeader>
               

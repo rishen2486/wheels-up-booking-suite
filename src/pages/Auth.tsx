@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { Car } from 'lucide-react';
@@ -17,6 +18,7 @@ export default function Auth() {
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [role, setRole] = useState('customer');
   const [loading, setLoading] = useState(false);
   
   const { signIn, signUp, user } = useAuth();
@@ -35,7 +37,7 @@ export default function Auth() {
 
     try {
       if (mode === 'signup') {
-        const { error } = await signUp(email, password, firstName, lastName);
+        const { error } = await signUp(email, password, firstName, lastName, role);
         if (error) {
           if (error.message.includes('User already registered')) {
             toast({
@@ -92,12 +94,12 @@ export default function Auth() {
             <Car className="h-12 w-12 text-primary" />
           </div>
           <CardTitle className="text-2xl">
-            {mode === 'signin' ? 'Welcome back' : 'Create account'}
+            Welcome to CarsRus
           </CardTitle>
           <CardDescription>
             {mode === 'signin' 
               ? 'Sign in to your account to continue' 
-              : 'Sign up to start renting cars'
+              : 'Create your account for agent access or customer booking'
             }
           </CardDescription>
         </CardHeader>
@@ -125,6 +127,21 @@ export default function Auth() {
                     required
                   />
                 </div>
+              </div>
+            )}
+            
+            {mode === 'signup' && (
+              <div className="space-y-2">
+                <Label htmlFor="role">Account Type</Label>
+                <Select value={role} onValueChange={setRole}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select account type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="customer">Customer (Book Cars)</SelectItem>
+                    <SelectItem value="agent">Agent (Post Cars)</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             )}
             

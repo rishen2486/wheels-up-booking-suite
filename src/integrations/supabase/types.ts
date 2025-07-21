@@ -172,6 +172,45 @@ export type Database = {
         }
         Relationships: []
       }
+      search_requests: {
+        Row: {
+          created_at: string
+          dropoff_date: string
+          dropoff_location: string | null
+          dropoff_time: string
+          id: string
+          pickup_date: string
+          pickup_location: string
+          pickup_time: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          dropoff_date: string
+          dropoff_location?: string | null
+          dropoff_time: string
+          id?: string
+          pickup_date: string
+          pickup_location: string
+          pickup_time: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          dropoff_date?: string
+          dropoff_location?: string | null
+          dropoff_time?: string
+          id?: string
+          pickup_date?: string
+          pickup_location?: string
+          pickup_time?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

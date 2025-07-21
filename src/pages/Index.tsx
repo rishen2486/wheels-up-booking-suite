@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Car, Star, Shield, Clock, MapPin, ArrowRight, CheckCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import SearchCard from '@/components/SearchCard';
 
 interface FeaturedCar {
   id: string;
@@ -14,6 +15,7 @@ interface FeaturedCar {
   type: string;
   location: string;
   features: string[];
+  image_urls: string[];
 }
 
 const Index = () => {
@@ -28,7 +30,7 @@ const Index = () => {
     try {
       const { data } = await supabase
         .from('cars')
-        .select('id, name, daily_rate, type, location, features')
+        .select('id, name, daily_rate, type, location, features, image_urls')
         .eq('available', true)
         .limit(3);
       
@@ -44,7 +46,7 @@ const Index = () => {
       <section className="relative bg-gradient-hero text-white py-20">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h1 className="text-5xl md:text-6xl font-bold mb-6">
-            Rent Your Perfect Car
+            Rent Your Perfect Car Online
           </h1>
           <p className="text-xl md:text-2xl mb-8 text-white/90 max-w-3xl mx-auto">
             Choose from our premium fleet of vehicles and hit the road with confidence. 
@@ -68,13 +70,18 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Search Card */}
+      <div className="max-w-7xl mx-auto px-4 -mt-12 relative z-10">
+        <SearchCard />
+      </div>
+
       {/* Features Section */}
-      <section className="py-20 bg-secondary/50">
+      <section className="py-20 bg-secondary/50 mt-12">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose RentCars?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose Our Online Car Rental Platform?</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              We make car rental simple, reliable, and affordable
+              We make online car rental simple, reliable, and affordable
             </p>
           </div>
           
@@ -112,11 +119,11 @@ const Index = () => {
                 <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
                   <Clock className="h-8 w-8 text-primary" />
                 </div>
-                <CardTitle>24/7 Support</CardTitle>
+                <CardTitle>24/7 Online Support</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-base">
-                  Our customer support team is available around the clock to assist you
+                  Our online customer support team is available around the clock to assist you
                 </CardDescription>
               </CardContent>
             </Card>
@@ -128,9 +135,9 @@ const Index = () => {
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Featured Vehicles</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Featured Cars Available Online</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Popular choices from our premium fleet
+              Popular choices from our premium fleet - book online now
             </p>
           </div>
           
@@ -138,8 +145,16 @@ const Index = () => {
             {featuredCars.map((car) => (
               <Card key={car.id} className="overflow-hidden hover:shadow-lg transition-shadow">
                 <CardHeader className="p-0">
-                  <div className="h-48 bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center relative">
-                    <Car className="h-16 w-16 text-primary" />
+                  <div className="h-48 bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center relative overflow-hidden">
+                    {car.image_urls && car.image_urls.length > 0 ? (
+                      <img 
+                        src={car.image_urls[0]} 
+                        alt={car.name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <Car className="h-16 w-16 text-primary" />
+                    )}
                     <Badge className="absolute top-4 right-4">{car.type}</Badge>
                   </div>
                 </CardHeader>
@@ -161,7 +176,7 @@ const Index = () => {
                       ${car.daily_rate}
                       <span className="text-sm font-normal text-muted-foreground">/day</span>
                     </div>
-                    <Link to={`/book/${car.id}`}>
+                    <Link to={`/booking/${car.id}`}>
                       <Button>Book Now</Button>
                     </Link>
                   </div>
@@ -226,15 +241,15 @@ const Index = () => {
       <section className="py-20">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Ready to Hit the Road?
+            Ready to Book Your Car Online?
           </h2>
           <p className="text-xl text-muted-foreground mb-8">
-            Join thousands of satisfied customers and book your perfect car today.
+            Join thousands of satisfied customers who trust our online platform.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/cars">
               <Button size="lg">
-                Start Booking
+                Start Online Booking
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
