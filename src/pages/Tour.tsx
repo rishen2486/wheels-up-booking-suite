@@ -43,8 +43,8 @@ export default function Tour() {
       {/* Header */}
       <div className="bg-gradient-hero py-12">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold text-white mb-4">Guided Car Tours</h1>
-          <p className="text-xl text-white/90">Discover amazing destinations with our curated driving experiences</p>
+          <h1 className="text-4xl font-bold text-white mb-4">Online Guided Car Tours</h1>
+          <p className="text-xl text-white/90">Book amazing destinations and driving experiences through our platform</p>
         </div>
       </div>
 

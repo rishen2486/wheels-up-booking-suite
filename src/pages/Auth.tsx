@@ -98,8 +98,8 @@ export default function Auth() {
           </CardTitle>
           <CardDescription>
             {mode === 'signin' 
-              ? 'Sign in to your account to continue' 
-              : 'Create your account for agent access or customer booking'
+              ? 'Sign in to access our online car rental platform' 
+              : 'Create your account to access our online car rental services'
             }
           </CardDescription>
         </CardHeader>

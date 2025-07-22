@@ -4,6 +4,10 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Car, Star, Shield, Clock, MapPin, ArrowRight, CheckCircle } from 'lucide-react';
+import luxuryCarHero from '@/assets/luxury-car-hero.jpg';
+import sampleCar1 from '@/assets/sample-car-1.jpg';
+import sampleCar2 from '@/assets/sample-car-2.jpg';
+import sampleCar3 from '@/assets/sample-car-3.jpg';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import SearchCard from '@/components/SearchCard';
@@ -43,8 +47,16 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="relative bg-gradient-hero text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 text-center">
+      <section className="relative bg-gradient-hero text-white py-20 overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src={luxuryCarHero} 
+            alt="Luxury car" 
+            className="w-full h-full object-cover opacity-30"
+          />
+          <div className="absolute inset-0 bg-gradient-hero/80"></div>
+        </div>
+        <div className="max-w-7xl mx-auto px-4 text-center relative z-10">
           <h1 className="text-5xl md:text-6xl font-bold mb-6">
             Rent Your Perfect Car Online
           </h1>
@@ -153,7 +165,11 @@ const Index = () => {
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <Car className="h-16 w-16 text-primary" />
+                      <img 
+                        src={[sampleCar1, sampleCar2, sampleCar3][Math.floor(Math.random() * 3)]} 
+                        alt={car.name}
+                        className="w-full h-full object-cover"
+                      />
                     )}
                     <Badge className="absolute top-4 right-4">{car.type}</Badge>
                   </div>

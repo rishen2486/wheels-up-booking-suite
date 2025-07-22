@@ -31,12 +31,19 @@ export function Navbar() {
   const isAdmin = profile?.role === 'admin';
   const isAgent = profile?.role === 'agent';
 
-  const navigationItems = [
+  const baseNavigationItems = [
     { name: 'Home', path: '/', icon: Home },
     { name: 'Rent Car', path: '/cars', icon: Car },
     { name: 'Tour', path: '/tour', icon: MapPin },
     { name: 'Attractions', path: '/attractions', icon: Camera },
   ];
+
+  const agentNavigationItems = [
+    ...baseNavigationItems,
+    { name: 'Rental Cars', path: '/rental-cars', icon: Settings },
+  ];
+
+  const navigationItems = isAgent ? agentNavigationItems : baseNavigationItems;
 
   return (
     <nav className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b sticky top-0 z-50">

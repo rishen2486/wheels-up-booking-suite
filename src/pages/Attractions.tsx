@@ -86,8 +86,8 @@ export default function Attractions() {
       {/* Header */}
       <div className="bg-gradient-hero py-12">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold text-white mb-4">Local Attractions</h1>
-          <p className="text-xl text-white/90">Discover amazing destinations accessible with your rental car</p>
+          <h1 className="text-4xl font-bold text-white mb-4">Popular Attractions Online</h1>
+          <p className="text-xl text-white/90">Browse destinations and plan your trip through our website</p>
         </div>
       </div>
 

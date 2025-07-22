@@ -5,6 +5,9 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Car, Users, Fuel, Settings, MapPin, Search, Calendar } from 'lucide-react';
+import sampleCar1 from '@/assets/sample-car-1.jpg';
+import sampleCar2 from '@/assets/sample-car-2.jpg';
+import sampleCar3 from '@/assets/sample-car-3.jpg';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
@@ -217,7 +220,11 @@ export default function Cars() {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <Car className="h-16 w-16 text-primary" />
+                    <img 
+                      src={[sampleCar1, sampleCar2, sampleCar3][Math.floor(Math.random() * 3)]} 
+                      alt={car.name}
+                      className="w-full h-full object-cover"
+                    />
                   )}
                 </div>
                 <div className="absolute top-4 right-4">
