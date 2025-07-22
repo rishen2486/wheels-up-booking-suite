@@ -78,20 +78,16 @@ export function Navbar() {
             </Sheet>
 
             <Link to="/" className="flex items-center space-x-2">
+              <img 
+                src="/lovable-uploads/821064f5-40b4-4cd9-9284-c72424f80df8.png" 
+                alt="CarsRus Logo" 
+                className="h-8 w-auto mr-2"
+              />
               <Car className="h-8 w-8 text-primary" />
               <span className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
                 CarsRus
               </span>
             </Link>
-          </div>
-
-          {/* Logo in top right (hidden on mobile) */}
-          <div className="hidden md:flex items-center absolute right-4 top-1/2 transform -translate-y-1/2">
-            <img 
-              src="/lovable-uploads/821064f5-40b4-4cd9-9284-c72424f80df8.png" 
-              alt="CarsRus Logo" 
-              className="h-10 w-auto"
-            />
           </div>
 
           {/* Desktop Navigation */}

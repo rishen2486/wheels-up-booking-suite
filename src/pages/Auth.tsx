@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,7 +7,8 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
-import { Car } from 'lucide-react';
+import { Car, CreditCard } from 'lucide-react';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 export default function Auth() {
   const [searchParams] = useSearchParams();
@@ -20,6 +21,9 @@ export default function Auth() {
   const [lastName, setLastName] = useState('');
   const [role, setRole] = useState('customer');
   const [loading, setLoading] = useState(false);
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const [showPayment, setShowPayment] = useState(false);
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
   
   const { signIn, signUp, user } = useAuth();
   const { toast } = useToast();
@@ -33,6 +37,16 @@ export default function Auth() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!recaptchaToken) {
+      toast({
+        title: "Verification required",
+        description: "Please complete the reCAPTCHA verification.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     setLoading(true);
 
     try {
@@ -72,7 +86,7 @@ export default function Auth() {
             title: "Welcome back!",
             description: "You have been signed in successfully."
           });
-          navigate('/');
+          setShowPayment(true);
         }
       }
     } catch (error) {
@@ -168,7 +182,16 @@ export default function Auth() {
               />
             </div>
             
-            <Button type="submit" className="w-full" disabled={loading}>
+            {/* ReCAPTCHA */}
+            <div className="flex justify-center">
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" // Test key
+                onChange={setRecaptchaToken}
+              />
+            </div>
+            
+            <Button type="submit" className="w-full" disabled={loading || !recaptchaToken}>
               {loading ? 'Loading...' : mode === 'signin' ? 'Sign In' : 'Sign Up'}
             </Button>
           </form>
@@ -186,6 +209,62 @@ export default function Auth() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Payment Modal */}
+      {showPayment && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <Card className="w-full max-w-md">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <CreditCard className="h-5 w-5" />
+                Choose Payment Method
+              </CardTitle>
+              <CardDescription>
+                Select your preferred payment method to complete the process
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Button 
+                onClick={() => {
+                  toast({
+                    title: "Credit Card Payment",
+                    description: "Redirecting to Stripe payment..."
+                  });
+                  setTimeout(() => navigate('/'), 2000);
+                }}
+                className="w-full"
+              >
+                Pay with Credit Card
+              </Button>
+              
+              <Button 
+                onClick={() => {
+                  toast({
+                    title: "PayPal Payment",
+                    description: "Redirecting to PayPal..."
+                  });
+                  setTimeout(() => navigate('/'), 2000);
+                }}
+                variant="outline"
+                className="w-full"
+              >
+                Pay with PayPal
+              </Button>
+              
+              <Button 
+                onClick={() => {
+                  setShowPayment(false);
+                  navigate('/');
+                }}
+                variant="ghost"
+                className="w-full"
+              >
+                Skip Payment
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </div>
   );
 }
