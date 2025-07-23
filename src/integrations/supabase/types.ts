@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      agentsinfo: {
+        Row: {
+          approved: boolean | null
+          business_address: string | null
+          company_name: string | null
+          created_at: string
+          id: string
+          license_number: string | null
+          phone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          approved?: boolean | null
+          business_address?: string | null
+          company_name?: string | null
+          created_at?: string
+          id?: string
+          license_number?: string | null
+          phone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          approved?: boolean | null
+          business_address?: string | null
+          company_name?: string | null
+          created_at?: string
+          id?: string
+          license_number?: string | null
+          phone?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       bookings: {
         Row: {
           car_id: string | null

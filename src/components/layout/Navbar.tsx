@@ -40,7 +40,7 @@ export function Navbar() {
 
   const agentNavigationItems = [
     ...baseNavigationItems,
-    { name: 'Rental Cars', path: '/rental-cars', icon: Settings },
+    { name: 'Car Registration', path: '/rental-cars', icon: Settings },
   ];
 
   const navigationItems = isAgent ? agentNavigationItems : baseNavigationItems;
