@@ -30,6 +30,10 @@ export function Navbar() {
 
   const isAdmin = profile?.role === 'admin';
   const isAgent = profile?.role === 'agent';
+  
+  // Debug logging
+  console.log('Profile in navbar:', profile);
+  console.log('Is agent:', isAgent);
 
   const baseNavigationItems = [
     { name: 'Home', path: '/', icon: Home },
@@ -81,10 +85,9 @@ export function Navbar() {
               <img 
                 src="/lovable-uploads/821064f5-40b4-4cd9-9284-c72424f80df8.png" 
                 alt="CarsRus Logo" 
-                className="h-8 w-auto mr-2"
+                className="h-12 w-auto mr-2"
               />
-              <Car className="h-8 w-8 text-primary" />
-              <span className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+              <span className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
                 CarsRus
               </span>
             </Link>

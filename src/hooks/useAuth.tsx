@@ -35,6 +35,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
               .select('*')
               .eq('user_id', session.user.id)
               .single();
+            console.log('Profile data fetched:', profileData); // Debug log
             setProfile(profileData);
           }, 0);
         } else {
@@ -57,6 +58,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             .select('*')
             .eq('user_id', session.user.id)
             .single();
+          console.log('Profile data on session check:', profileData); // Debug log
           setProfile(profileData);
         }, 0);
       }

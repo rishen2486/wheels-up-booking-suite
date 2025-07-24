@@ -13,6 +13,7 @@ import { toast } from "@/hooks/use-toast";
 import { CalendarIcon, Car, MapPin, Clock, CreditCard } from "lucide-react";
 import { format, differenceInDays } from "date-fns";
 import { cn } from "@/lib/utils";
+import { CheckoutModal } from "@/components/CheckoutModal";
 
 export default function Booking() {
   const { carId } = useParams();
@@ -25,6 +26,7 @@ export default function Booking() {
   const [pickupLocation, setPickupLocation] = useState("");
   const [dropoffLocation, setDropoffLocation] = useState("");
   const [specialRequests, setSpecialRequests] = useState("");
+  const [showCheckout, setShowCheckout] = useState(false);
 
   useEffect(() => {
     if (!user) {
@@ -84,6 +86,11 @@ export default function Booking() {
       return;
     }
 
+    // Show checkout modal instead of directly creating booking
+    setShowCheckout(true);
+  };
+
+  const handlePaymentSuccess = async () => {
     setLoading(true);
     
     const totalAmount = calculateTotal();
@@ -93,14 +100,14 @@ export default function Booking() {
       .insert({
         user_id: user!.id,
         car_id: carId,
-        start_date: startDate.toISOString().split('T')[0],
-        end_date: endDate.toISOString().split('T')[0],
+        start_date: startDate!.toISOString().split('T')[0],
+        end_date: endDate!.toISOString().split('T')[0],
         pickup_location: pickupLocation,
         dropoff_location: dropoffLocation,
         total_amount: totalAmount,
         special_requests: specialRequests || null,
-        status: "pending",
-        payment_status: "pending"
+        status: "confirmed",
+        payment_status: "paid"
       });
 
     setLoading(false);
@@ -116,7 +123,7 @@ export default function Booking() {
 
     toast({
       title: "Success",
-      description: "Booking created successfully!",
+      description: "Booking confirmed and payment processed!",
     });
     navigate("/dashboard");
   };
@@ -314,13 +321,28 @@ export default function Booking() {
                   className="w-full"
                   size="lg"
                 >
-                  {loading ? "Creating Booking..." : "Book Now"}
+                  {loading ? "Processing..." : "Proceed to Checkout"}
                 </Button>
               </CardContent>
             </Card>
           </div>
         </div>
       </div>
+
+      {/* Checkout Modal */}
+      <CheckoutModal
+        isOpen={showCheckout}
+        onClose={() => setShowCheckout(false)}
+        bookingDetails={{
+          carName: car?.name || '',
+          startDate: startDate ? format(startDate, 'MMM dd, yyyy') : '',
+          endDate: endDate ? format(endDate, 'MMM dd, yyyy') : '',
+          totalAmount: calculateTotal(),
+          pickupLocation,
+          dropoffLocation: dropoffLocation || pickupLocation
+        }}
+        onPaymentSuccess={handlePaymentSuccess}
+      />
     </div>
   );
 }
