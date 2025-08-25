@@ -31,9 +31,15 @@ export function Navbar() {
   const isAdmin = profile?.role === 'admin';
   const isAgent = profile?.role === 'agent';
   
-  // Debug logging
-  console.log('Profile in navbar:', profile);
+  // Enhanced debug logging
+  console.log('=== NAVBAR DEBUG ===');
+  console.log('User:', user?.email);
+  console.log('Profile loaded:', !!profile);
+  console.log('Profile data:', profile);
+  console.log('Profile role:', profile?.role);
   console.log('Is agent:', isAgent);
+  console.log('Is admin:', isAdmin);
+  console.log('===================');
 
   const baseNavigationItems = [
     { name: 'Home', path: '/', icon: Home },
